@@ -25,11 +25,11 @@ We have downloaded a subset of the data provided, and merged files with the same
 (genes) to produce a multi-class dataset where the target variable is the type
 of cancer present in each sample (there are healthy samples as well).
 
-We generated datasets according to the procedure above for two different sets of genes, GPL96 and GPL570. Our goal is to
+We generated datasets as described above for two different sets of genes, GPL96 and GPL570. Our goal is to
 analyze the datasets independently and use these results to determine which set of genes
 has more predictive power.
 
 Here is link to the data https://drive.google.com/drive/folders/1eJelCkSJAd7yWjFGcTLycNLSvzpQWK_A?usp=sharing.
 The csv files contain the processed datasets corresponding to each set of genes. The zip files
-contain all the data we download from the Curated Microarray Database to produce these merged datasets.
+contain all the data we downloaded from the Curated Microarray Database to produce these merged datasets.
 To run the join and label notebooks, simply download and unzip the zip files.
