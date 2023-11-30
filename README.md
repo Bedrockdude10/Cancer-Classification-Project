@@ -1,6 +1,6 @@
 # Cancer-Classification-Project
-By Mitchell Wadas, Danny Rollo, Alex Vandenberg, and Ty Pacchione.
-Code written for the final project for MATH 4570: Matrix Methods in Machine Learning &amp; Data Analysis.
+
+Code written by Mitchell Wadas, Danny Rollo, Alex Vandenberg, and Ty Pacchione for the final project of MATH 4570: Matrix Methods in Machine Learning &amp; Data Analysis.
 
 Early detection and diagnosis is critical in the treatment of cancer.
 Recently, microarray gene expression data has been used to this end.
