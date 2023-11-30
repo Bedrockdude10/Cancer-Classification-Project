@@ -1,2 +1,6 @@
-data/GPL96.csv
-data/GPL570.csv
+data
+GPL96
+GPL570
+.DS_Store
+__pycache__
+results/*.npy
