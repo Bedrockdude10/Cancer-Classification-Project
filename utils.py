@@ -13,39 +13,56 @@ def read_data(path):
 def int_enc(data):
     unique = data["label"].unique().tolist()
     data["label"] = [ unique.index(x) for x in data["label"] ]
-    return data
+    return data, unique
 
 def shuffle_Xy(X, y):
     idx = np.arange(len(X))
     np.random.shuffle(idx)
     return X[idx], y[idx]
 
-def plot_confusion_matrix(y, yhat, title, path=None):
+def plot_confusion_matrix(y, yhat, labels, title, path=None, show=False):
     cmat = confusion_matrix(y, yhat)
     cpct = cmat/np.sum(cmat, axis=0)
 
-    sns.heatmap(cpct, cmap="Blues", annot=True)
+    sns.heatmap(
+        cpct, 
+        cmap="Blues", 
+        annot=True, 
+        xticklabels=labels, 
+        yticklabels=labels
+    )
+    plt.xlabel("Predicted Class")
+    plt.ylabel("Actual Class")
     plt.title(title)
 
     if path:
         plt.savefig(path)
 
-    plt.show()
+    if show:
+        plt.show()
+    
+    else:
+        plt.close()
 
-def plot_roc_curves(y, yhat_proba, title, path=None):
+def plot_roc_curves(y, yhat_proba, labels, title, path=None, show=False):
 
-    for i in range(len(np.unique(y))):
+    for i in np.unique(y):
         fpr, tpr, _ = roc_curve(
             (y == i).astype(int),
-            yhat_proba[:, i]
+            yhat_proba[:, i],
         )
-        plt.plot(fpr, tpr)
+        plt.plot(fpr, tpr, label=labels[i])
 
     plt.title(title)
     plt.xlabel("False Positive Rate")
-    plt.ylabel("True  Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.legend()
 
     if path:
         plt.savefig(path)
 
-    plt.show()
+    if show:
+        plt.show()
+    
+    else:
+        plt.close()
