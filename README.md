@@ -13,7 +13,7 @@ to analyze the curated microarray datasets provided by the Structural Bio-inform
 Computational Biology Lab in the hopes of outperforming the benchmarks on these datasets,
 and building a more general model which can accurately diagnose a variety of cancers.
 
-After training our model, we will assess it's performance on a dataset including both
+After training our model, we will assess its performance on a dataset including both
 healthy and cancerous cells. We will compute the precision and recall of our model(s)
 and discuss the implications of the different types of errors in a medical setting.
 
@@ -32,4 +32,4 @@ has more predictive power.
 Here is link to the data https://drive.google.com/drive/folders/1eJelCkSJAd7yWjFGcTLycNLSvzpQWK_A?usp=sharing.
 The csv files contain the processed datasets corresponding to each set of genes. The zip files
 contain all the data we downloaded from the Curated Microarray Database to produce these merged datasets.
-To run the join and label notebooks, simply download and unzip the zip files.
+To run the dataprep notebook, simply download and unzip the zip files.
