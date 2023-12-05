@@ -2,8 +2,8 @@
 \usetheme{Boadilla}
 
 \usepackage{hyperref}
-% \usepackage{biblatex}
-% \addbibresource{references.bib}
+\usepackage{biblatex}
+\addbibresource{references.bib}
 
 \usepackage{graphicx}
 \graphicspath{ {results} }
@@ -100,6 +100,9 @@
             \item {
                 We applied logistic regression to the principal components.
             }
+            \item {
+                This resulted in an accurate diagnosis in approximately 95\% of cases.
+            }
         \end{itemize}
     \end{frame}
 
@@ -112,6 +115,13 @@
             \item {
                 We performed grid search hyperparameter optimization to find the optimal neural
                 architecture.
+            }
+            \item {
+                The optimal architecture was determined to be 5 hidden layers with 50 neurons in
+                each with ReLU activation between each two layers.
+            }
+            \item {
+                With this architecture, we achieved accurate diagnosis in approximately 97\% of cases.
             }
         \end{itemize}
     \end{frame}
@@ -161,6 +171,24 @@
         \end{center}
     \end{frame}
 
+    \begin{frame}{Conclusions}
+        \begin{itemize} \setlength\itemsep{15pt}
+            \item {
+                We found that Neural Networks generally outperformed traditional
+                machine learning techniques on this high dimensional multi-class
+                problem.
+            }
+            \item {
+                By comparing performance across datasets, we found that the GPL96
+                gene set was more suitable for cancer diagnosis.
+            }
+            \item {
+                We observed that in both datasets, with both models, it was
+                particularly hard to diagnose renal (kidney) cancer.
+            }
+        \end{itemize}
+    \end{frame}
+
     \iffalse % not sure these add value, also very hard to see.
     \begin{frame}{ROC Curve - GPL96}
         \begin{center}
@@ -190,8 +218,8 @@
     \fi
     
     \begin{frame}{References}
-        % \nocite{*}
-        % \printbibliography
+        \nocite{*}
+        \printbibliography
     \end{frame}
 
 \end{document}
