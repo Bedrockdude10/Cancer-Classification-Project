@@ -4,3 +4,7 @@ GPL570
 .DS_Store
 __pycache__
 results/*.npy
+results.bbl
+results.nav
+results.run.xml
+results.snm

@@ -3,7 +3,6 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 from glob import glob
 from tqdm import tqdm
-import seaborn as sns
 import pandas as pd
 import numpy as np
 import warnings
@@ -161,19 +160,37 @@ def plot_confusion_matrix(y, yhat, labels, title, path=None, show=False):
     cmat = confusion_matrix(y, yhat)
     cpct = cmat/np.sum(cmat, axis=0)
 
-    # plot the heatmap
-    sns.heatmap(
-        cpct, 
-        cmap="Blues", 
-        annot=True, 
-        xticklabels=labels, 
-        yticklabels=labels
-    )
+    fig, ax = plt.subplots(figsize=(7,6))
+    im = ax.imshow(cpct, cmap="Blues")
 
-    # label the axis and provide title
+    # Create colorbar
+    cbar = ax.figure.colorbar(im, ax=ax)
+
+    # Show all ticks and label them with the respective list entries
+    ax.set_xticks(np.arange(len(labels)), labels=labels)
+    ax.set_yticks(np.arange(len(labels)), labels=labels)
+
+    ax.tick_params(axis="x", labelsize=8)
+    ax.tick_params(axis="y", labelsize=8)
+
+    # Rotate the tick labels and set their alignment.
+    plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
+            rotation_mode="anchor")
+
+    plt.setp(ax.get_yticklabels(), rotation=90, ha="right",
+            rotation_mode="anchor")
+
+    # Loop over data dimensions and create text annotations.
+    for i in range(len(labels)):
+        for j in range(len(labels)):
+            text = ax.text(j, i, round(cpct[i, j], 2),
+                        ha="center", va="center", 
+                        color=("w" if cpct[i, j] > .25 else "black"))
+
     plt.xlabel("Predicted Class")
     plt.ylabel("Actual Class")
     plt.title(title)
+    plt.tight_layout()
 
     # optionally save figure
     if path:
@@ -202,6 +219,8 @@ def plot_roc_curves(y, yhat_proba, labels, title, path=None, show=False):
     show: boolean, whether or not to display the plot.
     """
 
+    fig, ax = plt.subplots()
+
     # for each class
     for i in np.unique(y):
         # find the false positive rate and true positive rate
@@ -212,14 +231,60 @@ def plot_roc_curves(y, yhat_proba, labels, title, path=None, show=False):
             yhat_proba[:, i],     # probabilities of this class
         )
         # plot the fpr vs. tpr with corresponding label
-        plt.plot(fpr, tpr, label=labels[i])
+        ax.plot(fpr, tpr, label=labels[i])
 
     # give a title, label axes, provide legend
-    plt.title(title)
-    plt.xlabel("False Positive Rate")
-    plt.ylabel("True Positive Rate")
+    ax.set_title(title)
+    ax.set_xlabel("False Positive Rate")
+    ax.set_ylabel("True Positive Rate")
     plt.legend()
 
+    # optionally save figure
+    if path:
+        plt.savefig(path)
+
+    # optionally show figure
+    if show:
+        plt.show()
+    
+    # otherwise, close the plot, we are done.
+    else:
+        plt.close()
+
+def plot_feature_analysis(total_contribution, features, title, n=30, path=None, show=False):
+    """
+    Visualize the contribution of features to the final output by plotting the distribution
+    of contribution (in a boxplot) and the top n features (in a bar plot).
+
+    total_contribution: array, net (absolute) contribution of each feature (sum over class)
+    features: a list of feature labels (should have len = len(total_contribution))
+    title: title for the plot
+    n: the number of significant features to display in the box plot
+    path: location to save image
+    show: boolean, to display or not to display, that is the question.
+    """
+    sorted_idx = np.argsort(total_contribution)[::-1]
+    top_n = sorted_idx[:n]
+
+    label = list(np.array(features)[top_n])
+
+    fig, axe = plt.subplots(figsize=(8, 6), ncols=2, width_ratios=[1, .25], sharey=True)
+
+    axe[0].bar(range(n), total_contribution[top_n])
+    axe[0].set_xticks(range(n), labels=label, rotation=90)
+    axe[0].set_xlabel("Gene")
+    axe[0].set_ylabel("Contribution")
+    axe[0].set_title("Most Important Features")
+
+    axe[1].boxplot([ total_contribution ])
+    axe[1].set_xticks([])
+    axe[1].set_title("Distribution")
+    axe[1].set_ylabel("Contribution")
+
+    plt.suptitle(title)
+    # pls stop cutting off the xlabels...
+    plt.tight_layout()
+    
     # optionally save figure
     if path:
         plt.savefig(path)

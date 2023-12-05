@@ -1,9 +1,36 @@
 \documentclass{beamer}
+\usetheme{Boadilla}
+
+\usepackage{hyperref}
+% \usepackage{biblatex}
+% \addbibresource{references.bib}
 
 \usepackage{graphicx}
 \graphicspath{ {results} }
 
+\title[ML for Cancer Diagnosis] {
+    Machine Learning for Cancer Diagnosis on Microarray Data
+}
+\author[Pacchione, Rollo, Vandenberg, Wadas] {
+    Ty Pacchione, Danny Rollo, Alexander Vandenberg, \\ and Mitchell Wadas
+}
+\date {
+    December 7, 2023
+}
+
+\setbeamersize{text margin left=7mm,text margin right=10mm} 
+\renewcommand{\raggedright}{\leftskip=0pt \rightskip=0pt}
+
 \begin{document}
+
+    \frame{\titlepage}
+
+    \iffalse
+    \begin{frame}
+        \frametitle{Outline}
+        \tableofcontents
+    \end{frame}
+    \fi
 
     \begin{frame}{Background}
         \begin{itemize}\setlength\itemsep{15pt}
@@ -11,7 +38,7 @@
                 Microarrays measure the expression of thousands of genes simultaneously. 
             }
             \item {
-                Microarray data is being used for early diagnosis of cancer.
+                Microarray data is increasingly being used for early diagnosis of cancer.
             }
             \item {
                 Researchers are struggling to extract meaningful information from so much data.
@@ -21,74 +48,129 @@
             }
         \end{itemize}
     \end{frame}
-
-    \begin{frame}{Procedure}
-        \begin{itemize} \setlength\itemsep{15pt}
-            \item {
-                We will perform multi-class classification to diagnose samples
-                as healthy or cancerous and determine what type of cancer.
-            }
-            \item {
-                We will compare traditional ML (logistic regression with PCA) 
-                and deep learning.
-            }
-            \item {
-                We will compare different set of genes (as features) to determine which
-                has more diagnostic power.
-            }
-        \end{itemize}
-    \end{frame}
     
     \begin{frame}{Data}
         \begin{itemize} \setlength\itemsep{15pt}
             \item {
+                Raw data was sourced from the Structural Bioinformatics and Computational Biology Lab's
+                CuMiDa database \cite{CuMiDa}. 
+                Each file corresponds to a specific type of cancer and set of genes. 
+
+                \begin{center}
+                    \vspace{10pt}
+                    \includegraphics[scale=.6]{SampleScreenshot.png}
+                \end{center}
+            }
+            \item {
+                We downloaded approximately 40 datasets corresponding to different cancer / gene set
+                combinations.
+            }
+            \item {
+                We combined them into two datasets, one corresponding to each gene set.
+            }
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Procedure}
+        \begin{itemize} \setlength\itemsep{15pt}
+            \item {
+                We formulated the diagnosis as a multi-class classification problem.
+            }
+            \item {
+                A notable characteristic of our data is the number of features, between
+                30,000 and 50,000.
+            }
+            \item {
+                We compared traditional ML (logistic regression with PCA) 
+                and deep learning.
+            }
+            \item {
+                We compared different set of genes (as features) to determine which
+                has more diagnostic power.
+            }
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Methods - Logistic Regression with PCA}
+        \begin{itemize} \setlength\itemsep{15pt}
+            \item {
+                We decomposed the data into 50 principal components which captured
+                roughly 95\% of the variance (efficient reduction).
+            }
+            \item {
+                We applied logistic regression to the principal components.
+            }
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Methods - Neural Network}
+        \begin{itemize} \setlength\itemsep{15pt}
+            \item {
+                Instead of using PCA, we gave the network the full feature set, allowing it to
+                perform feature extraction.
+            }
+            \item {
+                We performed grid search hyperparameter optimization to find the optimal neural
+                architecture.
             }
         \end{itemize}
     \end{frame}
 
     \begin{frame}{Cross Validation Results}
         \begin{center}
-            \includegraphics[scale=.63]{accdist.png}
-            \vspace{15pt}
+            \hspace{10pt}
+            \includegraphics[scale=.65]{AccuracyDist.png}
         \end{center}
     \end{frame}
 
-    % put nn on the left
     \begin{frame}{Confusion Matrix - GPL96}
         \begin{center}
-            \hspace{-70pt}
+            \hspace{-60pt}
             \begin{minipage}{0.4\textwidth}
-                \includegraphics[scale=.3]{LRGPL96confusion.png}
+                \includegraphics[scale=.40]{LRonGPL96Confusion.png}
             \end{minipage}
             \hspace{30pt}
             \begin{minipage}{0.4\textwidth}
-                \includegraphics[scale=.3]{NNGPL96confusion.png}
+                \includegraphics[scale=.40]{NNonGPL96Confusion.png}
             \end{minipage}
         \end{center}
     \end{frame}
 
     \begin{frame}{Confusion Matrix - GPL570}
         \begin{center}
-            \hspace{-70pt}
+            \hspace{-60pt}
             \begin{minipage}{0.4\textwidth}
-                \includegraphics[scale=.3]{LRGPL570confusion.png}
+                \includegraphics[scale=.40]{LRonGPL570Confusion.png}
             \end{minipage}
             \hspace{30pt}
             \begin{minipage}{0.4\textwidth}
-                \includegraphics[scale=.3]{NNGPL570confusion.png}
+                \includegraphics[scale=.40]{NNonGPL570Confusion.png}
             \end{minipage}
         \end{center}
     \end{frame}
 
+    \begin{frame}{Feature Analysis - GPL96}
+        \begin{center}
+            \includegraphics[scale=.45]{LRonGPL96Features.png}
+        \end{center}
+    \end{frame}
+
+    \begin{frame}{Feature Analysis - GPL570}
+        \begin{center}
+            \includegraphics[scale=.45]{LRonGPL570Features.png}
+        \end{center}
+    \end{frame}
+
+    \iffalse % not sure these add value, also very hard to see.
     \begin{frame}{ROC Curve - GPL96}
         \begin{center}
             \hspace{-60pt}
             \begin{minipage}{0.4\textwidth}
-                \includegraphics[scale=.4]{LRGPL96ROC.png}
+                \includegraphics[scale=.4]{LRonGPL96ROC.png}
             \end{minipage}
             \hspace{40pt}
             \begin{minipage}{0.4\textwidth}
-                \includegraphics[scale=.4]{NNGPL96ROC.png}
+                \includegraphics[scale=.4]{NNonGPL96ROC.png}
             \end{minipage}
         \end{center}
     \end{frame}
@@ -97,31 +179,19 @@
         \begin{center}
             \hspace{-60pt}
             \begin{minipage}{0.4\textwidth}
-                \includegraphics[scale=.4]{LRGPL570ROC.png}
+                \includegraphics[scale=.4]{LRonGPL570ROC.png}
             \end{minipage}
             \hspace{40pt}
             \begin{minipage}{0.4\textwidth}
-                \includegraphics[scale=.4]{NNGPL570ROC.png}
+                \includegraphics[scale=.4]{NNonGPL570ROC.png}
             \end{minipage}
         \end{center}
     \end{frame}
-
-    \begin{frame}{Open Questions and Next Steps}
-        \begin{itemize} \setlength\itemsep{15pt}
-            \item {
-                If we restrict the GPL570 to the 7 classes present in GPL96,
-                will performance improve? To address the information
-                content of the gene sets, we need to 
-                perform this experiment.
-            }
-            \item {
-                ``Beautify'' plots by adding labels to each class (healthy, lung cancer, etc.).
-            }
-            \item {
-                Draw conclusions and prepare a presentation.
-            }
-        \end{itemize}
+    \fi
+    
+    \begin{frame}{References}
+        % \nocite{*}
+        % \printbibliography
     \end{frame}
-
 
 \end{document}
